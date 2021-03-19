@@ -12,4 +12,4 @@ Ylläpitäjä voi taas lisätä ja poistaa luontokohteita sekä muokata niiden t
 
 ### Käyttöliittymäluonnos
 
-<img src="https://github.com/hackinen/uudenmaan-luontokohteet/dokumentaatio/misc/kayttoliittymaluonnos.jpg" width="400">
+<img src="https://github.com/hackinen/uudenmaan-luontokohteet/blob/main/dokumentaatio/misc/kayttoliittymaluonnos.jpg" width="400">
