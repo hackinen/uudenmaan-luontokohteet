@@ -12,4 +12,8 @@ Ylläpitäjä voi taas lisätä ja poistaa luontokohteita sekä muokata niiden t
 
 ### Käyttöliittymäluonnos
 
-<img src="https://github.com/hackinen/uudenmaan-luontokohteet/blob/main/dokumentaatio/misc/kayttoliittymaluonnos.jpg" width="400">
+Alla on sovelluksen karkea käyttöliittymäluonnos: 
+
+<img src="https://github.com/hackinen/uudenmaan-luontokohteet/blob/main/dokumentaatio/misc/kayttoliittymaluonnos.jpg" width="600">
+
+Vielä on hieman epäselvää, että päivitetäänkö tarkasteltavan luontokohteen tiedot ainoastaan sivupalkkiin, vai olisiko parempi olla oma näkymä aina tiettyä tarkasteltavaa luonotkohdetta kohti. Ehkä parasta olisi, jos kartasta painamalla kohteen perustiedot, kuten nimi ja tähtien määrä, näkyisivät sivupalkissa ja mikäli käyttäjä haluaa tarkastella kohdetta enemmän, voi sivupalkista painamalla siirtyä tarkempaan näkymään.
