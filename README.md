@@ -2,7 +2,7 @@
 
 Helsingin Yliopiston tietokantasovelluskurssilla toteutettava sovellus, jonka tarkoituksena on tarjota käyttäjälle tarkasteltavaksi ja arvioitavaksi erilaisia ulkoilu- ja retkeilykohteita Uudenmaan alueelta.
 
-## Sovellus
+### Sovellus
 
 [Sovellus herokussa](https://uudenmaan-luontokohteet.herokuapp.com)
 

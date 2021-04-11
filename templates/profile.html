@@ -21,19 +21,12 @@
   <div class="row">
     <div class="col-8">
 
-      <h1>Kaikki kohteet</h1>
+      <h1>Oma Profiili - {{ name }}</h1>
       <br>
-      <div>
-        {% for destination in allDestinations: %}
-            <h4>{{ destination[1] }}, {{ destination[2] }}</h4>
-            <ul>
-                <li>Kohteen saama arvio: {{ destination[3] }}</li>
-                <li>Kohteen polut/nähtävyydet:</li>
-            </ul>
-            <br>
-        {% endfor %}
-      </div>
-        
+      <h4>Tilin tiedot</h4>
+      <p><b>Nimi</b>: {{ name }}</p>
+      <p><b>Nimimerkki</b>: {{ username }}</p>
+      <p><b>Admin</b>: {%if admin%} kyllä {% else %} ei {% endif %}</p>  
     </div>
   </div>
 </div>

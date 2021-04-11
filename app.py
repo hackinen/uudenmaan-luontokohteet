@@ -74,10 +74,17 @@ def newuser():
 
 @app.route("/mainpage")
 def mainpage():
-    return render_template("mainpage.html",name=session["username"])
+    bestRanked = db.getBestRankedDestinations()
+    return render_template("mainpage.html",name=session["username"],bestRanked=bestRanked)
 
 
 @app.route("/destinations")
 def destinations():
     allDestinations = db.getDestinations()
     return render_template("destinations.html", allDestinations=allDestinations)
+
+@app.route("/profile")
+def profile():
+    name = db.getName(session["username"])
+    admin = db.isAdmin(session["username"])
+    return render_template("profile.html",name=name,username=session["username"],admin=admin)

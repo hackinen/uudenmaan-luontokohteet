@@ -11,6 +11,9 @@
         <a class="nav-link" href="../destinations">Kaikki kohteet</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="../profile">Oma profiili</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="../logout">Kirjaudu ulos</a>
       </li>
     </ul>
@@ -24,7 +27,17 @@
     </div>
     <div class="col-4">
       <h2>Suosituimpia kohteita</h2>
-      <p>kohteet</p>
+      <br>
+      <div>
+        {% for destination in bestRanked: %}
+            <h5>{{ destination[1] }}, {{ destination[2] }}</h5>
+            <ul>
+                <li>Kohteen saama arvio: {{ destination[3] }}</li>
+                <li>Kohteen polut/nähtävyydet:</li>
+            </ul>
+            <br>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </div>

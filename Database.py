@@ -30,9 +30,16 @@ class Database:
         self.db.session.commit()
 
     def getUsers(self):
-        result = self.db.session.execute("SELECT * FROM users").fetchAll()
+        result = self.db.session.execute("SELECT * FROM users").fetchall()
         self.db.session.commit()
         return result
+
+    def getName(self, username):
+        sql = "SELECT name FROM users WHERE username=:username"
+        result = self.db.session.execute(sql, {"username":username})
+        self.db.session.commit()
+        name = result.fetchone()[0]
+        return name
 
     def getPassword(self, username):
         sql = "SELECT password FROM users WHERE username=:username"
@@ -73,7 +80,9 @@ class Database:
         self.db.session.commit()
 
     def getDestinations(self):
-        return self.db.session.execute("SELECT * FROM destinations").fetchall()
+        sql = self.db.session.execute("SELECT * FROM destinations ORDER BY name").fetchall()
+        self.db.session.commit()
+        return sql
 
     def getDestination(self, name):
         sql = "SELECT * FROM destinations WHERE name=:name"
@@ -81,13 +90,18 @@ class Database:
         destination = result.fetchone() 
         return destination
 
+    def getBestRankedDestinations(self):
+        sql = self.db.session.execute("SELECT * FROM destinations ORDER BY ranking desc LIMIT 6").fetchall()
+        self.db.session.commit()
+        return sql
+
     def addDefaultDestinations(self):
         dest = self.getDestination("Palakoski")
         if dest == None:
-            self.createDestination("Palakoski","Vihti",0)
-            self.createDestination("Pääkslahden luontopolku","Vihti",0)
-            self.createDestination("Liessaaren luontopolku","Lohja",0)
-            self.createDestination("Nuuksion kansallispuisto","Espoo",0)
+            self.createDestination("Palakoski","Vihti",2)
+            self.createDestination("Pääkslahden luontopolku","Vihti",1)
+            self.createDestination("Liessaaren luontopolku","Lohja",5)
+            self.createDestination("Nuuksion kansallispuisto","Espoo",4)
             self.createDestination("Sipooonkorven kansallispuisto","Sipoo",0)
             self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi",0)
             self.createDestination("Meikon ulkoilualue","Kirkkonummi",0)
