@@ -8,6 +8,7 @@ class Database:
         self.db = SQLAlchemy(app)
 
         self.createTableUsers()
+        self.createTableReviews()
         self.createTableDestinations()
         self.addDefaultDestinations()
 
@@ -67,6 +68,25 @@ class Database:
         self.db.session.commit()
 
 
+    # REVIEWS:
+
+    def createTableReviews(self):
+        sql = "CREATE TABLE IF NOT EXISTS reviews (id SERIAL PRIMARY KEY, destinationId INT, userId INT, ranking INT, comment TEXT);"
+        self.db.session.execute(sql)
+        self.db.session.commit()
+
+    def createReview(self, destinationId, userId, ranking, comment):
+        sql = "INSERT INTO reviews (destinationId,userId,ranking,comment) VALUES (:destinationId,:userId,:ranking,:comment)"
+        self.db.session.execute(sql, {"destinationId":destinationId,"userId":userId,"ranking":ranking,"comment":comment})
+        self.db.session.commit()
+
+    def getReviewsByDestination(self, destinationId):
+        result = self.db.session.execute("SELECT * FROM reviews WHERE destinationId=:destinationId", {"destinationId":destinationId})
+        reviews = result.fetchall()
+        self.db.session.commit()
+        return reviews
+
+
     # DESTINATIONS:
 
     def createTableDestinations(self):
@@ -88,6 +108,7 @@ class Database:
         sql = "SELECT * FROM destinations WHERE name=:name"
         result = self.db.session.execute(sql, {"name":name})
         destination = result.fetchone() 
+        self.db.session.commit()
         return destination
 
     def getDestinationById(self, id):
@@ -103,6 +124,7 @@ class Database:
 
     def addDefaultDestinations(self):
         dest = self.getDestination("Palakoski")
+        print(dest)
         if dest == None:
             self.createDestination("Palakoski","Vihti",2)
             self.createDestination("Pääkslahden luontopolku","Vihti",1)

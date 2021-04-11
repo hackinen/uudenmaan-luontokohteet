@@ -78,6 +78,7 @@ def newuser():
 
 @app.route("/mainpage")
 def mainpage():
+    db.addDefaultDestinations()
     bestRanked = db.getBestRankedDestinations()
     return render_template("mainpage.html",name=session["username"],bestRanked=bestRanked)
 
@@ -90,8 +91,8 @@ def destinations():
 @app.route("/destination")
 def destination():
     destination = db.getDestinationById(session["destinationId"])
-    print(destination)
-    return render_template("destination.html", destination=destination)
+    reviews = db.getReviewsByDestination(session["destinationId"])
+    return render_template("destination.html", destination=destination, reviews=reviews)
 
 @app.route("/profile")
 def profile():
