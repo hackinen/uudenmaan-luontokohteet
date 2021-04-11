@@ -124,7 +124,6 @@ class Database:
 
     def addDefaultDestinations(self):
         dest = self.getDestination("Palakoski")
-        print(dest)
         if dest == None:
             self.createDestination("Palakoski","Vihti",2)
             self.createDestination("Pääkslahden luontopolku","Vihti",1)

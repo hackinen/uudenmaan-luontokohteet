@@ -78,7 +78,6 @@ def newuser():
 
 @app.route("/mainpage")
 def mainpage():
-    db.addDefaultDestinations()
     bestRanked = db.getBestRankedDestinations()
     return render_template("mainpage.html",name=session["username"],bestRanked=bestRanked)
 
