@@ -11,6 +11,11 @@ app.secret_key = getenv("SECRET_KEY")
 
 db = Database(app)
 
+@app.before_request
+def set_dest():
+    if 'dest' in request.args:
+        session["destination"] = request.args['dest']
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -31,9 +36,8 @@ def register():
         error = "Salasanat eivät täsmää"
         return render_template("newuser.html", error=error)
 
-    admin = False
     passwordHash = generate_password_hash(password)
-    db.createUser(name, username, passwordHash, admin)
+    db.createUser(name, username, passwordHash, False)
 
     session["username"] = username
     return redirect("/mainpage")
@@ -82,6 +86,15 @@ def mainpage():
 def destinations():
     allDestinations = db.getDestinations()
     return render_template("destinations.html", allDestinations=allDestinations)
+
+@app.route("/destination")
+def destination():
+    # i should probably do this some other way, just dont know how :))) 
+    destination = session["destination"].replace("(", "")
+    destination = destination.replace(")","")
+    destination = destination.replace("'","")
+    destination = destination.split(",")
+    return render_template("destination.html", destination=destination)
 
 @app.route("/profile")
 def profile():

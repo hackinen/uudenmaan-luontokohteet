@@ -58,7 +58,7 @@ class Database:
     def isAdmin(self, username):
         sql = "SELECT admin FROM users WHERE username=:username"
         result = self.db.session.execute(sql, {"username":username})
-        admin = result.fetchone()
+        admin = result.fetchone()[0]
         self.db.session.commit()
         return admin
 
@@ -100,14 +100,23 @@ class Database:
         if dest == None:
             self.createDestination("Palakoski","Vihti",2)
             self.createDestination("Pääkslahden luontopolku","Vihti",1)
-            self.createDestination("Liessaaren luontopolku","Lohja",5)
-            self.createDestination("Nuuksion kansallispuisto","Espoo",4)
-            self.createDestination("Sipooonkorven kansallispuisto","Sipoo",0)
-            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi",0)
+            self.createDestination("Liessaaren luontopolku","Lohja",3)
+            self.createDestination("Nuuksion kansallispuisto","Espoo",5)
+            self.createDestination("Sipooonkorven kansallispuisto","Sipoo",4)
+            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi",5)
             self.createDestination("Meikon ulkoilualue","Kirkkonummi",0)
             self.createDestination("Linlo","Kirkkonummi",0)
             self.createDestination("Hanikan luontopolku","Espoo",0)
             self.createDestination("Tremanskärrin luontopolku","Espoo",0)
             self.createDestination("Sarvikallion luontopolku","Tuusula",0)
             self.createDestination("Kukuljärven vaellusreitti","Loviisa",0)
+            self.createDestination("Luukki","Espoo",0)
+            self.createDestination("Högholmenin luontopolku","Hanko",0)
+            self.createDestination("Kopparnäsin virkistysalue","Inkoo",0)
+            self.createDestination("Karnaistenkorpi","Lohja",0)
+            self.createDestination("Korkberget","Kirkkonummi",0)
+            self.createDestination("Kytäjä-Usmin ulkoilualue","Hyvinkää",0)
+            self.createDestination("Karkalin luonnonpuisto","Lohja",0)
+            self.createDestination("Paavolan luontopolku","Lohja",0)
+
 

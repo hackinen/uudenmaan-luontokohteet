@@ -19,24 +19,20 @@
     </ul>
   </nav>
   <div class="row">
+
     <div class="col-8">
-      <h1>Uudenmaan luontokohteet</h1>
-      <p>Tervetuloa, {{ name }}!</p>
-      <p>Tähän kartta<p>
+
+      <h1>{{ destination[1] }}, {{ destination[2] }}</h1>
+      <br>
+      <p>Kohteen luontopolut ja nähtävyydet:</p>
+      <ul>
+          <li>tähän listaus</li>
+      </ul>
         
     </div>
+
     <div class="col-4">
-      <h2>Suosituimpia kohteita</h2>
-      <br>
-      <div>
-        {% for destination in bestRanked: %}
-            <h5><a href="../destination?dest={{destination}}">{{ destination[1] }}, {{ destination[2] }}</a></h5>
-            <ul>
-                <li>Kohteen arvio: {{ destination[3] }}</li>
-            </ul>
-            <br>
-        {% endfor %}
-      </div>
+        <h3>Kohteen arvio: {{ destination[3] }}</h3>    
     </div>
   </div>
 </div>
