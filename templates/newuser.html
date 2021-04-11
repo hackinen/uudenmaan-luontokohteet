@@ -1,0 +1,49 @@
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+<title>Rekisteröityminen</title>
+<h1>Uudenmaan luontokohteet</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <br>
+            <h3>Rekisteröityminen</h3>
+            <form action="/register" method="POST">
+
+              <div class="form-group col-6">
+                <label for="name">Nimi</label>
+                <input type="text" class="form-control" id="name" name="name">
+              </div>
+
+              <div class="form-group col-6">
+                <label for="username">Nimimerkki</label>
+                <input type="text" class="form-control" id="username" name="username">
+              </div>
+
+              <div class="form-group col-6">
+                <label for="password">Salasana</label>
+                <input type="password" class="form-control" id="password" name="password">
+              </div>
+
+              <div class="form-group col-6">
+                <label for="passwordConfirm">Salasana uudestaan</label>
+                <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+              </div>
+
+              <div class="form-group col-6">
+                <button type="submit" class="btn btn-primary">Luo käyttäjä</button>
+              </div>
+
+              {% if error %}
+              <h4>{{ error }}</h4>
+              {% endif %}
+
+              <br>
+              <p><b>Onko sinulla jo käyttäjä?</b> <a href="../">Kirjaudu sisään</a></p>
+
+            </form>
+          </div>
+    </div>
+</div>

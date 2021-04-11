@@ -17,14 +17,20 @@
   </nav>
   <div class="row">
     <div class="col-8">
-      <h1>Uudenmaan luontokohteet</h1>
-      <p>Tervetuloa, {{ name }}!</p>
-      <p>Tähän kartta<p>
+
+      <h1>Kaikki kohteet</h1>
+      <br>
+      <div>
+        {% for destination in allDestinations: %}
+            <h4>{{ destination[1] }}, {{ destination[2] }}</h4>
+            <ul>
+                <li>Kohteen saama arvio: {{ destination[3] }}</li>
+                <li>Kohteen polut/nähtävyydet:</li>
+            </ul>
+            <br>
+        {% endfor %}
+      </div>
         
-    </div>
-    <div class="col-4">
-      <h2>Suosituimpia kohteita</h2>
-      <p>kohteet</p>
     </div>
   </div>
 </div>

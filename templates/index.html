@@ -1,14 +1,50 @@
-<title>Uudenmaan luontokohteet</title>
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
+<title>Uudenmaan luontokohteet</title>
 <h1>Uudenmaan luontokohteet</h1>
 
-<p>Kirjaudu sisään tai luo uusi käyttäjä:</p>
-<form action="/mainpage" method="POST">
-    Nimimerkki:
-    <input type="text" name="name">
-    <br>
-    Salasana:
-    <input type="text" password="password">
-    <br>
-    <input type="submit" value="Lähetä">
-</form>
+{% if session.username %}
+<div class="container">
+  <div class="row">
+    <div class="col-8">
+      
+      <p>Olet kirjautunut nimellä {{ session.username }}</p>
+      <a href="/logout">Kirjaudu ulos</a>
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <br>
+            <h3>Kirjaudu sisään</h3>
+            <form action="/login" method="POST">
+              <div class="form-group col-6">
+                <label for="username">Nimimerkki</label>
+                <input type="text" class="form-control" id="username" name="username">
+              </div>
+              <div class="form-group col-6">
+                <label for="password">Salasana</label>
+                <input type="password" class="form-control" id="password" name="password">
+              </div>
+              <div class="form-group col-6">
+                <button type="submit" class="btn btn-primary">Kirjaudu</button>
+              </div>
+            </form>
+            
+            {% if error %}
+            <h4>{{ error }}</h4>
+            {% endif %}
+
+            <br>
+            <p><b>Uusi käyttäjä?</b> <a href="/newuser">Luo uusi tunnus tästä</a></p>
+            
+            
+          </div>
+    </div>
+</div>
+{% endif %}

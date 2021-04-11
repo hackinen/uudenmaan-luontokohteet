@@ -1,3 +1,5 @@
+# Määrittelydokumentti
+
 ## Sovelluksen kuvaus
 
 Sovellus on tarkoitus toteuttaa hyvin vastaavalla tavalla kuin esimerkkiaiheissa annettu ravintolasovellus. Sovellukseen on tarkoitus toteuttaa karttaa, jossa näkyy luontokohteiden sijainnit. Kohteesta painamalla avautuu lisää tietoa.
