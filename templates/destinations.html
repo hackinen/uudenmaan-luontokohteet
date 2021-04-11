@@ -25,7 +25,7 @@
       <br>
       <div>
         {% for destination in allDestinations: %}
-            <h4><a href="../destination?dest={{destination}}">{{ destination[1] }}, {{ destination[2] }}</a></h4>
+            <h4><a href="../destination?dest={{destination[0]}}">{{ destination[1] }}, {{ destination[2] }}</a></h4>
             <ul>
                 <li>Kohteen arvio: {{ destination[3] }}</li>
                 <li>Kohteen polut/nähtävyydet:</li>

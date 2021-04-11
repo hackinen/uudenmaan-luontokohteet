@@ -90,6 +90,12 @@ class Database:
         destination = result.fetchone() 
         return destination
 
+    def getDestinationById(self, id):
+        sql = "SELECT * FROM destinations WHERE id=:id"
+        result = self.db.session.execute(sql, {"id":id})
+        destination = result.fetchone() 
+        return destination
+
     def getBestRankedDestinations(self):
         sql = self.db.session.execute("SELECT * FROM destinations ORDER BY ranking desc LIMIT 6").fetchall()
         self.db.session.commit()

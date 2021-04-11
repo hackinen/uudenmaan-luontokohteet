@@ -14,7 +14,7 @@ db = Database(app)
 @app.before_request
 def set_dest():
     if 'dest' in request.args:
-        session["destination"] = request.args['dest']
+        session["destinationId"] = request.args['dest']
 
 @app.route("/")
 def index():
@@ -89,11 +89,8 @@ def destinations():
 
 @app.route("/destination")
 def destination():
-    # i should probably do this some other way, just dont know how :))) 
-    destination = session["destination"].replace("(", "")
-    destination = destination.replace(")","")
-    destination = destination.replace("'","")
-    destination = destination.split(",")
+    destination = db.getDestinationById(session["destinationId"])
+    print(destination)
     return render_template("destination.html", destination=destination)
 
 @app.route("/profile")
