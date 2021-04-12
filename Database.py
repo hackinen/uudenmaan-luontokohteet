@@ -49,6 +49,20 @@ class Database:
         self.db.session.commit() 
         return password
     
+    def getusernameById(self, id):
+        sql = "SELECT username FROM users WHERE id=:id"
+        result = self.db.session.execute(sql, {"id":id})
+        username = result.fetchone()
+        self.db.session.commit()
+        return username
+
+    def getUserId(self, username):
+        sql = "SELECT id FROM users WHERE username=:username"
+        result = self.db.session.execute(sql, {"username":username})
+        id = result.fetchone()[0]
+        self.db.session.commit()
+        return id
+
     def usernameTaken(self, username):
         sql = "SELECT * FROM users WHERE username=:username"
         result = self.db.session.execute(sql, {"username":username})
@@ -81,7 +95,7 @@ class Database:
         self.db.session.commit()
 
     def getReviewsByDestination(self, destinationId):
-        result = self.db.session.execute("SELECT * FROM reviews WHERE destinationId=:destinationId", {"destinationId":destinationId})
+        result = self.db.session.execute("SELECT u.username, r.ranking, r.comment FROM reviews r, users u WHERE r.destinationId=:destinationId AND u.id=r.userId", {"destinationId":destinationId})
         reviews = result.fetchall()
         self.db.session.commit()
         return reviews

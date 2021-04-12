@@ -76,25 +76,58 @@ def newuser():
     return render_template("newuser.html")
 
 
+@app.route("/newreview",methods=["POST"])
+def newreview():
+    try:
+        isLoggedIn()
+        comment = request.form["comment"]
+        userId = db.getUserId(session["username"])
+        ranking = request.form["stars"]
+
+        db.createReview(session["destinationId"],userId, ranking, comment)
+        return redirect("/destination")
+    except:
+        return redirect("/")
+
 @app.route("/mainpage")
 def mainpage():
-    bestRanked = db.getBestRankedDestinations()
-    return render_template("mainpage.html",name=session["username"],bestRanked=bestRanked)
+    try:
+        bestRanked = db.getBestRankedDestinations()
+        return render_template("mainpage.html",bestRanked=bestRanked)
+    except:
+        return redirect("/")
 
 
 @app.route("/destinations")
 def destinations():
-    allDestinations = db.getDestinations()
-    return render_template("destinations.html", allDestinations=allDestinations)
+    try:
+        isLoggedIn()
+        allDestinations = db.getDestinations()
+        return render_template("destinations.html", allDestinations=allDestinations)
+    except:
+        return redirect("/")
+
 
 @app.route("/destination")
 def destination():
-    destination = db.getDestinationById(session["destinationId"])
-    reviews = db.getReviewsByDestination(session["destinationId"])
-    return render_template("destination.html", destination=destination, reviews=reviews)
+    try:
+        isLoggedIn()
+        destination = db.getDestinationById(session["destinationId"])
+        reviews = db.getReviewsByDestination(session["destinationId"])
+        return render_template("destination.html", destination=destination, reviews=reviews)
+    except:
+        return redirect("/")
+
 
 @app.route("/profile")
 def profile():
-    name = db.getName(session["username"])
-    admin = db.isAdmin(session["username"])
-    return render_template("profile.html",name=name,username=session["username"],admin=admin)
+    try:    
+        name = db.getName(session["username"])
+        admin = db.isAdmin(session["username"])
+        return render_template("profile.html",name=name,username=session["username"],admin=admin)
+    except:
+        return redirect("/")
+
+
+def isLoggedIn():
+    session["username"]

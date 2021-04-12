@@ -28,11 +28,55 @@
       <ul>
           <li>tähän listaus</li>
       </ul>
-        
+      
     </div>
 
     <div class="col-4">
-        <h3>Kohteen arvio: {{ destination[3] }}</h3>    
+        <h3>Arvostelut - 
+            <img src="/static/star.png" alt="tähtiä:" style="width:25px;height:25px;">
+            {{ destination[3] }}
+        </h3>
+
+        <br>
+        <h6>Arvostele tämä kohde:</h6>
+        <form action="/newreview" method="POST">
+            <div>
+                Tähtiä:
+                <label for="one">1</label>
+                <input type="radio" value=1 id="one" name="stars"/>
+                
+                <label for="two"> 2</label>
+                <input type="radio" value=2 id="two" name="stars"/>
+
+                <label for="three"> 3</label>
+                <input type="radio" value=3 id="three" name="stars"/>
+
+                <label for="four"> 4</label>
+                <input type="radio" value=4 id="four" name="stars"/>
+
+                <label for="five"> 5</label>
+                <input type="radio" value=5 id="five" name="stars"/>
+            </div>
+            <div class="form-group col-12">
+                <textarea name="comment" class="form-control"></textarea>
+            </div>
+            <div class="form-group col-12">
+                <button type="submit" class="btn btn-primary">Lisää arvostelu</button>
+            </div>
+        </form>
+
+        <div>
+            <br>
+            {% for review in reviews: %}
+                <h5>
+                    @{{ review[0] }} - 
+                    <img src="/static/star.png" alt="tähtiä:" style="width:25px;height:25px;">
+                    {{review[1]}}
+                </h5>
+                <p>{{ review[2] }}</p>
+                <br>
+            {% endfor %}
+        </div>   
     </div>
   </div>
 </div>
