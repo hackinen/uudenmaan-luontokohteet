@@ -28,6 +28,30 @@ def register():
     password = request.form["password"]
     passwordConfirm = request.form["passwordConfirm"]
 
+    if name == None or name == "":
+        error = "Valitse jokin nimi"
+        return render_template("newuser.html", error=error)
+
+    if username == None or username == "":
+        error = "Valitse jokin nimimekki"
+        return render_template("newuser.html", error=error)
+
+    if password == None or password == "":
+        error = "Puuttuva salasana"
+        return render_template("newuser.html", error=error)
+        
+    if isNotValid(name):
+        error = "Liian lyhyt nimi"
+        return render_template("newuser.html", error=error)
+
+    if isNotValid(username):
+        error = "Liian lyhyt nimimerkki"
+        return render_template("newuser.html", error=error)
+
+    if isNotValid(password):
+        error = "Liian lyhyt salasana"
+        return render_template("newuser.html", error=error)
+
     if db.usernameTaken(username):
         error = "Valitsemasi nimimerkki on jo käytössä!"
         return render_template("newuser.html", error=error)
@@ -131,3 +155,8 @@ def profile():
 
 def isLoggedIn():
     session["username"]
+
+def isNotValid(input):
+    if len(input) < 2:
+        return True
+    return False

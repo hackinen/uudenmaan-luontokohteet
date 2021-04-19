@@ -100,6 +100,13 @@ class Database:
         self.db.session.commit()
         return reviews
 
+    def countStarAverage(self, destinationId):
+        sql = "SELECT AVG(ranking) FROM reviews WHERE destinationId=:destinationId"
+        result = self.db.session.execute(sql, {"destinationId":destinationId})
+        self.db.session.commit()
+        avg = result.fetchone[0]
+        return avg
+
 
     # DESTINATIONS:
 
@@ -139,12 +146,12 @@ class Database:
     def addDefaultDestinations(self):
         dest = self.getDestination("Palakoski")
         if dest == None:
-            self.createDestination("Palakoski","Vihti",2)
-            self.createDestination("Pääkslahden luontopolku","Vihti",1)
-            self.createDestination("Liessaaren luontopolku","Lohja",3)
-            self.createDestination("Nuuksion kansallispuisto","Espoo",5)
-            self.createDestination("Sipooonkorven kansallispuisto","Sipoo",4)
-            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi",5)
+            self.createDestination("Palakoski","Vihti",0)
+            self.createDestination("Pääkslahden luontopolku","Vihti",0)
+            self.createDestination("Liessaaren luontopolku","Lohja",0)
+            self.createDestination("Nuuksion kansallispuisto","Espoo",0)
+            self.createDestination("Sipooonkorven kansallispuisto","Sipoo",0)
+            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi",0)
             self.createDestination("Meikon ulkoilualue","Kirkkonummi",0)
             self.createDestination("Linlo","Kirkkonummi",0)
             self.createDestination("Hanikan luontopolku","Espoo",0)
