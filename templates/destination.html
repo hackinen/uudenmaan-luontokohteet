@@ -26,7 +26,9 @@
       <br>
       <p>Kohteen luontopolut ja nähtävyydet:</p>
       <ul>
-          <li>tähän listaus</li>
+          {% for attraction in attractions: %}
+            <li><b>{{ attraction[0] }}</b> {% if attraction[1] %} - {{ attraction[1] }} {% endif %} </li>
+          {% endfor %}
       </ul>
       
     </div>

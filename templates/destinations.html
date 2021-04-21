@@ -27,8 +27,13 @@
         {% for destination in allDestinations: %}
             <h4><a href="../destination?dest={{destination[0]}}">{{ destination[1] }}, {{ destination[2] }}</a></h4>
             <ul>
-                <li>Kohteen arvio: {{ destination[3] }}</li>
-                <li>Kohteen polut/nähtävyydet:</li>
+                <li>Kohteen arvio: 
+                  <img src="/static/star.png" alt="tähtiä:" style="width:20px;height:20px;">
+                  {{ destination[3] }}
+                </li>
+                <li>
+                  Arvioiden lukumäärä: {{ destination[4] }}
+                </li>
             </ul>
             <br>
         {% endfor %}

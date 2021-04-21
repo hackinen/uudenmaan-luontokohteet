@@ -39,7 +39,7 @@ def register():
     if password == None or password == "":
         error = "Puuttuva salasana"
         return render_template("newuser.html", error=error)
-        
+
     if isNotValid(name):
         error = "Liian lyhyt nimi"
         return render_template("newuser.html", error=error)
@@ -138,8 +138,10 @@ def destination():
         isLoggedIn()
         destination = db.getDestinationById(session["destinationId"])
         reviews = db.getReviewsByDestination(session["destinationId"])
-        return render_template("destination.html", destination=destination, reviews=reviews)
-    except:
+        attractions = db.getAttractionsByDestination(session["destinationId"])
+        return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions)
+    except Exception as e:
+        print(e)
         return redirect("/")
 
 

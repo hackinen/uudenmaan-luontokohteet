@@ -11,6 +11,8 @@ class Database:
         self.createTableReviews()
         self.createTableDestinations()
         self.addDefaultDestinations()
+        self.createTableAttractions()
+        self.addDefaultAttractions()
 
     # USERS:
 
@@ -108,20 +110,21 @@ class Database:
         return avg
 
 
+
     # DESTINATIONS:
 
     def createTableDestinations(self):
-        sql = "CREATE TABLE IF NOT EXISTS destinations (id SERIAL PRIMARY KEY, name TEXT, town TEXT, ranking INT);"
+        sql = "CREATE TABLE IF NOT EXISTS destinations (id SERIAL PRIMARY KEY, name TEXT, town TEXT);"
         self.db.session.execute(sql)
         self.db.session.commit()
 
-    def createDestination(self, name, town, ranking):
-        sql = "INSERT INTO destinations (name,town,ranking) VALUES (:name,:town,:ranking)"
-        self.db.session.execute(sql, {"name":name,"town":town,"ranking":ranking})
+    def createDestination(self, name, town):
+        sql = "INSERT INTO destinations (name,town) VALUES (:name,:town)"
+        self.db.session.execute(sql, {"name":name,"town":town})
         self.db.session.commit()
 
     def getDestinations(self):
-        sql = self.db.session.execute("SELECT * FROM destinations ORDER BY name").fetchall()
+        sql = self.db.session.execute("SELECT d.id, d.name, d.town, COALESCE(ROUND(AVG(r.ranking),1),0), COUNT(r.ranking) FROM destinations d LEFT JOIN reviews r ON r.destinationId=d.id GROUP BY d.id ORDER BY d.name;").fetchall()
         self.db.session.commit()
         return sql
 
@@ -133,38 +136,126 @@ class Database:
         return destination
 
     def getDestinationById(self, id):
-        sql = "SELECT * FROM destinations WHERE id=:id"
+        sql = "SELECT d.id, d.name, d.town, COALESCE(ROUND(AVG(r.ranking),1),0) FROM destinations d LEFT JOIN reviews r ON r.destinationId=d.id WHERE d.id=:id GROUP BY d.id;"
         result = self.db.session.execute(sql, {"id":id})
         destination = result.fetchone() 
         return destination
 
     def getBestRankedDestinations(self):
-        sql = self.db.session.execute("SELECT * FROM destinations ORDER BY ranking desc LIMIT 6").fetchall()
+        sql = self.db.session.execute("SELECT d.id, d.name, d.town, ROUND(AVG(r.ranking),1), COUNT(r.ranking) FROM reviews r JOIN destinations d ON r.destinationId=d.id GROUP BY d.id ORDER BY AVG(r.ranking) DESC, COUNT(r.ranking) DESC LIMIT 6;").fetchall()
         self.db.session.commit()
         return sql
+
+    
+
+
+    # ATTRACTIONS:
+
+    def createTableAttractions(self):
+        sql = "CREATE TABLE IF NOT EXISTS attractions (id SERIAL PRIMARY KEY, destinationId INT, name TEXT, info TEXT);"
+        self.db.session.execute(sql)
+        self.db.session.commit()
+
+    def createAttraction(self, destinationId, name, info):
+        sql = "INSERT INTO attractions (destinationId,name,info) VALUES (:destinationId,:name,:info)"
+        self.db.session.execute(sql, {"destinationId":destinationId,"name":name,"info":info})
+        self.db.session.commit()
+
+    def createAttractionWithNoInfo(self, destinationId, name):
+        self.createAttraction(destinationId, name, None)
+
+    def getAttraction(self, name):
+        sql = "SELECT * FROM attractions WHERE name=:name"
+        result = self.db.session.execute(sql, {"name":name})
+        destination = result.fetchone() 
+        self.db.session.commit()
+        return destination
+
+    def getAttractionsByDestination(self, destinationId):
+        result = self.db.session.execute("SELECT name, info FROM attractions WHERE destinationId=:destinationId", {"destinationId":destinationId})
+        reviews = result.fetchall()
+        self.db.session.commit()
+        return reviews
+
+
+
+
+    # DEFAULT DATA: 
 
     def addDefaultDestinations(self):
         dest = self.getDestination("Palakoski")
         if dest == None:
-            self.createDestination("Palakoski","Vihti",0)
-            self.createDestination("Pääkslahden luontopolku","Vihti",0)
-            self.createDestination("Liessaaren luontopolku","Lohja",0)
-            self.createDestination("Nuuksion kansallispuisto","Espoo",0)
-            self.createDestination("Sipooonkorven kansallispuisto","Sipoo",0)
-            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi",0)
-            self.createDestination("Meikon ulkoilualue","Kirkkonummi",0)
-            self.createDestination("Linlo","Kirkkonummi",0)
-            self.createDestination("Hanikan luontopolku","Espoo",0)
-            self.createDestination("Tremanskärrin luontopolku","Espoo",0)
-            self.createDestination("Sarvikallion luontopolku","Tuusula",0)
-            self.createDestination("Kukuljärven vaellusreitti","Loviisa",0)
-            self.createDestination("Luukki","Espoo",0)
-            self.createDestination("Högholmenin luontopolku","Hanko",0)
-            self.createDestination("Kopparnäsin virkistysalue","Inkoo",0)
-            self.createDestination("Karnaistenkorpi","Lohja",0)
-            self.createDestination("Korkberget","Kirkkonummi",0)
-            self.createDestination("Kytäjä-Usmin ulkoilualue","Hyvinkää",0)
-            self.createDestination("Karkalin luonnonpuisto","Lohja",0)
-            self.createDestination("Paavolan luontopolku","Lohja",0)
+            self.createDestination("Palakoski","Vihti")
+            self.createDestination("Pääkslahden luontopolku","Vihti")
+            self.createDestination("Liessaaren luontopolku","Lohja")
+            self.createDestination("Nuuksion kansallispuisto","Espoo")
+            self.createDestination("Sipooonkorven kansallispuisto","Sipoo")
+            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi")
+            self.createDestination("Meikon ulkoilualue","Kirkkonummi")
+            self.createDestination("Linlo","Kirkkonummi")
+            self.createDestination("Hanikan luontopolku","Espoo")
+            self.createDestination("Tremanskärrin luontopolku","Espoo")
+            self.createDestination("Sarvikallion luontopolku","Tuusula")
+            self.createDestination("Kukuljärven vaellusreitti","Loviisa")
+            self.createDestination("Luukki","Espoo")
+            self.createDestination("Högholmenin luontopolku","Hanko")
+            self.createDestination("Kopparnäsin virkistysalue","Inkoo")
+            self.createDestination("Karnaistenkorpi","Lohja")
+            self.createDestination("Korkbergetin luonnonsuojelualue","Kirkkonummi")
+            self.createDestination("Kytäjä-Usmin ulkoilualue","Hyvinkää")
+            self.createDestination("Karkalin luonnonpuisto","Lohja")
+            self.createDestination("Paavolan luontopolku","Lohja")
 
 
+    def addDefaultAttractions(self):
+        attraction = self.getAttraction("Palakoskenkierros")
+        if attraction == None:
+            self.createAttraction(1,"Palakoskenkierros","4,3 km, paljon korkeuseroja")
+            self.createAttraction(1,"Mummusalin näköalakallio","parkkipaikalta 1 km")
+            self.createAttractionWithNoInfo(2,"Laukkakallio")
+            self.createAttractionWithNoInfo(3,"Luontotietorastit")
+            self.createAttraction(3,"Luonnontie-terveysluontopolku","2 km")
+            self.createAttraction(4,"Punarinnankierros","2 km rengasreitti")
+            self.createAttraction(4,"Haukankierros","4 km rengasreitti")
+            self.createAttraction(4,"Korpinkierros","6-7,2 km rengasreitti")
+            self.createAttraction(4,"Takalan polku","1,5 km/suunta")
+            self.createAttraction(4,"Kaarniaispolku","2,7 km rengasreitti")
+            self.createAttraction(4,"Soidinkierros","4 km rengasreitti")
+            self.createAttraction(4,"Nahkiaispolku","2 km rengasreitti")
+            self.createAttraction(4,"Klassarinkierros","3,9 km rengasreitti")
+            self.createAttraction(4,"Yhdysreitti Haukkalampi-Haltia","4,6 km/suunta")
+            self.createAttraction(4,"Nuuksion kansallispuiston läpi vievä reitti","noin 14 km")
+            self.createAttraction(5,"Byabäckenin luontopolku","1,4 km; rengasreittinä 2,1 km")
+            self.createAttraction(5,"Kalkinpolttajanpolku","4,8 km rengasreitti")
+            self.createAttraction(5,"Högberget","näköalapaikka, osa kalkinpolttajanpolkua")
+            self.createAttraction(5,"Storträsk","1 km/suunta, osittain esteetön")
+            self.createAttraction(6,"Vetokannaksentaival","2,1 km")
+            self.createAttraction(6,"Telegrafbergetin lenkki","2,2 km rengasreitti")
+            self.createAttraction(6,"Pampskatanin pisto","1,4 km")
+            self.createAttraction(7,"Kuikankierros","3,2 km")
+            self.createAttraction(7,"Meikonkierros","8,3 km")
+            self.createAttraction(7,"Kotokierros","4,4 km")
+            self.createAttractionWithNoInfo(8,"useita luontopolkuja")
+            self.createAttractionWithNoInfo(9,"Soukankalliot")
+            self.createAttractionWithNoInfo(9,"Sundsberget")
+            self.createAttractionWithNoInfo(9,"Hanikan lintutorni")
+            self.createAttraction(10,"Tremanskärrin reitti","2,8 km")
+            self.createAttraction(10,"Kurkijärven reitti","3,4 km")
+            self.createAttraction(11,"Seittelinreitti","3,4 km rengasreitti")
+            self.createAttractionWithNoInfo(11,"Sarvikallion näköalapaikka")
+            self.createAttraction(12,"Vaellusreitti","noin 8 km rengasreitti")
+            self.createAttraction(13,"Eri mittaisia reittejä","2,5 km, 5,6 km, 8,6 km")
+            self.createAttraction(14,"Högholmenin reitti","lyhyt, noin 1km")
+            self.createAttractionWithNoInfo(15,"Useita polkuja merellisessä maastossa")
+            self.createAttractionWithNoInfo(15,"Rävberget")
+            self.createAttraction(16,"Karnaistenkorven luontopolku","3,3-7,7 km")
+            self.createAttraction(17,"Korkberget","korkea kallionäköalapaikka, josta näkymä Humaljärvelle")
+            self.createAttraction(18,"Haiskarin kierros","6,1 km")
+            self.createAttraction(18,"Kolmen lammen kierros","9,8 km")
+            self.createAttraction(18,"Niittulahden kierros","10,2 km")
+            self.createAttraction(18,"Kahden piilon kierros","11,5 km")
+            self.createAttraction(18,"Mustan kiven kierros","12,3 km")
+            self.createAttraction(18,"Seitsemän veljeksen vaellusreitti","19,8 km")
+            self.createAttraction(19,"luontopolku","6,5 km")
+            self.createAttraction(20,"Paavolan luontopolku","1 km")
+            self.createAttractionWithNoInfo(20,"Paavolan tammi")
