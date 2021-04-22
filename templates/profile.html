@@ -26,7 +26,65 @@
       <h4>Tilin tiedot</h4>
       <p><b>Nimi</b>: {{ name }}</p>
       <p><b>Nimimerkki</b>: {{ username }}</p>
-      <p><b>Admin</b>: {%if admin %} kyllä {% else %} ei {% endif %}</p>  
+      <p><b>Admin</b>: {%if admin %} kyllä {% else %} ei {% endif %}</p>
+      <br>
+      
+      <div>
+        {% if admin %}
+        <h4>Lisää uusi luontokohde</h4>
+        <br>
+        <form action="/newdestination" method="POST">
+          <div class="form-group col-6">
+            <label for="name">Kohteen nimi</label>
+            <input type="text" class="form-control" id="name" name="name">
+          </div>
+          <div class="form-group col-6">
+            <label for="town">Kunta</label>
+            <input type="text" class="form-control" id="town" name="town">
+          </div>
+          <div class="form-group col-6">
+            <button type="submit" class="btn btn-primary">Lisää</button>
+          </div>
+        </form>
+        {% if error %}
+          <p> {{ error }}</p>
+        {% endif %}
+
+        <br>
+        <h4>Lisää tietoja luontokohteeseen</h4>
+        <br>
+        <form action="/newattraction" method="POST">
+
+          <div class="form-group col-6">
+            <label for="destination">Kohde</label>
+            <select name="destination" class="form-control" id="destination">
+              {% for destination in destinations %}
+                <option value="{{ destination[0] }}">{{ destination[1] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group col-6">
+            <label for="attractionName">Polun/nähtävyyden nimi</label>
+            <input type="text" class="form-control" id="attractionName" name="attractionName">
+          </div>
+
+          <div class="form-group col-6">
+            <label for="info">Lisätietoja</label>
+            <input type="text" class="form-control" id="info" name="info">
+          </div>
+
+          <div class="form-group col-6">
+            <button type="submit" class="btn btn-primary">Lisää</button>
+          </div>
+        </form>
+        {% if error2 %}
+          <p> {{ error2 }}</p>
+        {% endif %}
+
+        {% endif %}
+
+      </div>
     </div>
   </div>
 </div>

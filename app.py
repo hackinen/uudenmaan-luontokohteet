@@ -108,10 +108,68 @@ def newreview():
         userId = db.getUserId(session["username"])
         ranking = request.form["stars"]
 
+        if ranking == None:
+            error = "Anna arvio 1-5"
+            return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions, error=error)
+
         db.createReview(session["destinationId"],userId, ranking, comment)
         return redirect("/destination")
-    except:
+    except Exception as e:
+        print(e)
         return redirect("/")
+
+
+@app.route("/newdestination",methods=["POST"])
+def newdestination():
+    try:
+        isLoggedIn()
+        admin = db.isAdmin(session["username"])
+        if admin:
+            name = request.form["name"]
+            town = request.form["town"]
+
+            if name == None or name == "":
+                error = "Anna luontokohteen nimi"
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), error=error)
+
+            if town == None or town == "":
+                error = "Anna luontokohteen sijaintikunta"
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), error=error)
+
+            db.createDestination(name,town)
+            return redirect("/profile")
+
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
+
+@app.route("/newattraction",methods=["POST"])
+def newattraction():
+    try:
+        isLoggedIn()
+        admin = db.isAdmin(session["username"])
+
+        if admin:
+            destinationId = request.form["destination"]
+            attraction = request.form["attractionName"]
+            info = request.form["info"]
+
+            if attraction == None or attraction == "":
+                error2 = "Anna lisättävän polun/nähtävyyden nimi"
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), error2=error2)
+
+            if info == None or info == "":
+                db.createAttractionWithNoInfo(destinationId,attraction)
+                return redirect("/profile")
+
+            db.createAttraction(destinationId,attraction,info)
+            return redirect("/profile")
+
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
 
 @app.route("/mainpage")
 def mainpage():
@@ -147,11 +205,17 @@ def destination():
 
 @app.route("/profile")
 def profile():
+    try:
+        admin = db.isAdmin(session["username"])
+    except:
+        admin = False
+
     try:    
         name = db.getName(session["username"])
-        admin = db.isAdmin(session["username"])
-        return render_template("profile.html",name=name,username=session["username"],admin=admin)
-    except:
+        destinations = db.getDestinations()
+        return render_template("profile.html",name=name,username=session["username"],admin=admin,destinations=destinations)
+    except Exception as e:
+        print(e)
         return redirect("/")
 
 

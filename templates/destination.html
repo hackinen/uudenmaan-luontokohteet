@@ -67,6 +67,10 @@
             </div>
         </form>
 
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+
         <div>
             <br>
             {% for review in reviews: %}
