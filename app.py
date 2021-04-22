@@ -130,11 +130,11 @@ def newdestination():
 
             if name == None or name == "":
                 error = "Anna luontokohteen nimi"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), error=error)
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), error=error)
 
             if town == None or town == "":
                 error = "Anna luontokohteen sijaintikunta"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), error=error)
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), error=error)
 
             db.createDestination(name,town)
             return redirect("/profile")
@@ -157,7 +157,7 @@ def newattraction():
 
             if attraction == None or attraction == "":
                 error2 = "Anna lisättävän polun/nähtävyyden nimi"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), error2=error2)
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), error2=error2)
 
             if info == None or info == "":
                 db.createAttractionWithNoInfo(destinationId,attraction)
@@ -213,7 +213,8 @@ def profile():
     try:    
         name = db.getName(session["username"])
         destinations = db.getDestinations()
-        return render_template("profile.html",name=name,username=session["username"],admin=admin,destinations=destinations)
+        reviews = db.getReviewsByUser(session["username"])
+        return render_template("profile.html",name=name,username=session["username"],admin=admin,destinations=destinations,reviews=reviews)
     except Exception as e:
         print(e)
         return redirect("/")

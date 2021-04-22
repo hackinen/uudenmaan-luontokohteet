@@ -109,6 +109,11 @@ class Database:
         avg = result.fetchone[0]
         return avg
 
+    def getReviewsByUser(self, username):
+        sql = "SELECT d.id, d.name, d.town, r.ranking, r.comment FROM reviews r JOIN destinations d ON d.id=r.destinationId WHERE userId=(SELECT id FROM users WHERE username=:username);"
+        result = self.db.session.execute(sql, {"username":username}).fetchall()
+        self.db.session.commit()
+        return result
 
 
     # DESTINATIONS:

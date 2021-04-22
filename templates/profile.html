@@ -86,5 +86,21 @@
 
       </div>
     </div>
+
+    <div class="col-4">
+      <br>
+      <h3>Omat arvioni</h3>
+      <br>
+      <div>
+        {% for review in reviews: %}
+            <h5><a href="../destination?dest={{review[0]}}">{{ review[1] }}, {{ review[2]}}</a></h5>
+            <p>
+              {{ review[3] }}
+              <img src="/static/star.png" alt="tähtiä:" style="width:20px;height:20px;"> 
+              - {{ review[4] }}
+            </p>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
