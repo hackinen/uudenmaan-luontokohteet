@@ -119,6 +119,20 @@ def newreview():
         return redirect("/")
 
 
+
+@app.route("/deletereview")
+def deletereview():
+    try:
+        isLoggedIn()
+        review = request.args["review"]
+        db.deleteReview(review)
+        return redirect("/profile")
+
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
+
 @app.route("/newdestination",methods=["POST"])
 def newdestination():
     try:
@@ -138,6 +152,19 @@ def newdestination():
 
             db.createDestination(name,town)
             return redirect("/profile")
+
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
+
+@app.route("/deletedestination")
+def deletedestination():
+    try:
+        isLoggedIn()
+        destination = request.args["deldest"]
+        db.deleteDestination(destination)
+        return redirect("/mainpage")
 
     except Exception as e:
         print(e)
@@ -171,6 +198,19 @@ def newattraction():
         return redirect("/")
 
 
+@app.route("/deleteattraction",methods=["POST"])
+def deleteattraction():
+    try:
+        isLoggedIn()
+        attraction = request.form["delAttraction"]
+        db.deleteAttraction(attraction)
+        return redirect("/destination")
+
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
+
 @app.route("/mainpage")
 def mainpage():
     try:
@@ -194,10 +234,11 @@ def destinations():
 def destination():
     try:
         isLoggedIn()
+        admin = db.isAdmin(session["username"])
         destination = db.getDestinationById(session["destinationId"])
         reviews = db.getReviewsByDestination(session["destinationId"])
         attractions = db.getAttractionsByDestination(session["destinationId"])
-        return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions)
+        return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions, admin=admin)
     except Exception as e:
         print(e)
         return redirect("/")

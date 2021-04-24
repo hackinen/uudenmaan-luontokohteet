@@ -110,11 +110,16 @@ class Database:
         return avg
 
     def getReviewsByUser(self, username):
-        sql = "SELECT d.id, d.name, d.town, r.ranking, r.comment FROM reviews r JOIN destinations d ON d.id=r.destinationId WHERE userId=(SELECT id FROM users WHERE username=:username);"
+        sql = "SELECT r.id, d.id, d.name, d.town, r.ranking, r.comment FROM reviews r JOIN destinations d ON d.id=r.destinationId WHERE userId=(SELECT id FROM users WHERE username=:username);"
         result = self.db.session.execute(sql, {"username":username}).fetchall()
         self.db.session.commit()
         return result
 
+    def deleteReview(self,reviewId):
+        sql = "DELETE FROM reviews WHERE id=:reviewId"
+        self.db.session.execute(sql, {"reviewId":reviewId})
+        self.db.session.commit()
+     
 
     # DESTINATIONS:
 
@@ -151,7 +156,12 @@ class Database:
         self.db.session.commit()
         return sql
 
-    
+    def deleteDestination(self, destinationId):
+        sql = "DELETE FROM destinations WHERE id=:destinationId"
+        self.db.session.execute(sql, {"destinationId":destinationId})
+        sql2 = "DELETE FROM attractions WHERE destinationId=:destinationId"
+        self.db.session.execute(sql2, {"destinationId":destinationId})
+        self.db.session.commit()
 
 
     # ATTRACTIONS:
@@ -177,12 +187,15 @@ class Database:
         return destination
 
     def getAttractionsByDestination(self, destinationId):
-        result = self.db.session.execute("SELECT name, info FROM attractions WHERE destinationId=:destinationId", {"destinationId":destinationId})
+        result = self.db.session.execute("SELECT * FROM attractions WHERE destinationId=:destinationId", {"destinationId":destinationId})
         reviews = result.fetchall()
         self.db.session.commit()
         return reviews
 
-
+    def deleteAttraction(self, attractionId):
+        sql = "DELETE FROM attractions WHERE id=:attractionId"
+        self.db.session.execute(sql, {"attractionId":attractionId})
+        self.db.session.commit()
 
 
     # DEFAULT DATA: 

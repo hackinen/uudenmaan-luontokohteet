@@ -27,10 +27,36 @@
       <p>Kohteen luontopolut ja nähtävyydet:</p>
       <ul>
           {% for attraction in attractions: %}
-            <li><b>{{ attraction[0] }}</b> {% if attraction[1] %} - {{ attraction[1] }} {% endif %} </li>
+            <li><b>{{ attraction[2] }}</b> {% if attraction[3] %} - {{ attraction[3] }} {% endif %} </li>
           {% endfor %}
       </ul>
       
+      {% if admin %}
+      <br>
+      <br>
+      <br>
+        <h5>Poista kohteesta</h5>
+        <br>
+        <form action="/deleteattraction" method="POST">
+
+          <div class="form-group col-6">
+            <label for="delAttraction">Poistettava polku/nähtävyys:</label>
+            <select name="delAttraction" class="form-control" id="delAttraction">
+              {% for attraction in attractions %}
+                <option value="{{ attraction[0] }}">{{ attraction[2] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group col-6">
+            <button type="submit" class="btn btn-primary">Poista</button>
+          </div>
+        </form>
+
+        <br>
+        <a href="/deletedestination?deldest={{destination[0]}}">Poista tämä kohde</a>
+      {% endif %}
+
     </div>
 
     <div class="col-4">
