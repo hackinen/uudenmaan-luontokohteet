@@ -12,9 +12,11 @@ Helsingin Yliopiston tietokantasovelluskurssilla toteutettava sovellus, jonka ta
 
 ## Sovelluksen eteneminen
 
-Sovellukseen on toteutettu suunnitellut toiminnot karttaa, hakemista ja suosikiksi lisäämistä lukuunottamatta. Etusivulta löytyy listaus suosituimmista luontokohteista ja joita painamalla pääsee kyseisen luontokohteen omalle sivulle. Vastaavasti kaikki tällä hetkellä tietokannassa olevat kohteet löytyvät välilehdeltä "Kaikki kohteet". Lisäksi on olemassa sivu "Oma profiili", josta voi tarkastella oman profiilinsa tietoja. Tällä sivulla on adminin lisäystoiminnot sekä kaikille käyttäjille näkyvä lista omista arvioistaan. Admin voi myös poistaa kohteisiin liittyviä tietoja sekä kokonaisia kohteita (nämä toiminnot löytyvät jokaisen kohteen omalta sivulta).
+Sovellukseen on toteutettu suunnitellut toiminnot karttaa ja hakemista lukuunottamatta. Etusivulta löytyy listaus suosituimmista luontokohteista ja joita painamalla pääsee kyseisen luontokohteen omalle sivulle. Vastaavasti kaikki tällä hetkellä tietokannassa olevat kohteet löytyvät välilehdeltä "Kaikki kohteet". Lisäksi on olemassa sivu "Oma profiili", josta voi tarkastella oman profiilinsa tietoja. Tällä sivulla voi admin lisätä uusia kohteita ja tietoja kohteisiin liittyen. Lisäksi sivulla on kaikille käyttäjille näkyvä lista omista arvioistaan sekä omista suosikkikohteistaan. Admin voi myös poistaa kohteisiin liittyviä tietoja sekä kokonaisia kohteita (nämä toiminnot löytyvät jokaisen kohteen omalta sivulta).
 
-Tietokannassa on tällä hetkellä neljä taulua: users, reviews, destinations ja attractions. Vielä olisi tarkoitus toteuttaa käyttäjien suosikkeja listaava taulu.
+Tietokannassa on tällä hetkellä viisi taulua: users, reviews, destinations, attractions ja favourites.
+
+Viimeiseen palautukseen mennessä on vielä tarkoitus ainakin saada kartta toimintaan ja mielellään myös jonkinlainen hakukenttä, mikäli aikaa riittää.
 
 Tarkempi kuvaus sovelluksen suunnitelmasta löytyy [määrittelydokumentista](https://github.com/hackinen/uudenmaan-luontokohteet/blob/main/dokumentaatio/maarittelydokumentti.md).
 
