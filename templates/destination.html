@@ -31,6 +31,14 @@
           {% endfor %}
       </ul>
       
+      <br>
+      {% if isFavourite %}
+        <a href="/removefavourite">Poista kohde suosikeista</a>
+      {% else %}
+        <a href="/makefavourite">Lisää kohde suosikkeihin</a>
+      {% endif %}
+      <br>
+
       {% if admin %}
       <br>
       <br>

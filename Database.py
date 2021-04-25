@@ -13,6 +13,7 @@ class Database:
         self.addDefaultDestinations()
         self.createTableAttractions()
         self.addDefaultAttractions()
+        self.createTableFavourites()
 
     # USERS:
 
@@ -196,6 +197,35 @@ class Database:
         sql = "DELETE FROM attractions WHERE id=:attractionId"
         self.db.session.execute(sql, {"attractionId":attractionId})
         self.db.session.commit()
+
+
+    # FAVOURITES:
+
+    def createTableFavourites(self):
+        self.db.session.execute("CREATE TABLE IF NOT EXISTS favourites (id SERIAL PRIMARY KEY, userId INT, destinationId INT);")
+        self.db.session.commit()
+
+    def createFavourite(self,username,destinationId):
+        sql = "INSERT INTO favourites (userId,destinationId) VALUES ((SELECT id FROM users WHERE username=:username),:destinationId)"
+        self.db.session.execute(sql, {"username":username,"destinationId":destinationId})
+        self.db.session.commit()
+
+    def getFavouritesByUser(self, username):
+        sql = "SELECT f.userId, f.destinationId, d.name, d.town FROM favourites f JOIN destinations d ON d.id=f.destinationId WHERE userId=(SELECT id FROM users WHERE username=:username);"
+        result = self.db.session.execute(sql, {"username":username}).fetchall()
+        self.db.session.commit()
+        return result
+
+    def deleteFavourite(self, username, destinationId):
+        sql = "DELETE FROM favourites WHERE userId=(SELECT id from users WHERE username=:username) AND destinationId=:destinationId"
+        self.db.session.execute(sql, {"username":username,"destinationId":destinationId})
+        self.db.session.commit()
+
+    def isFavourite(self,username,destinationId):
+        sql = "SELECT * FROM favourites WHERE userId=(SELECT id FROM users WHERE username=:username) AND destinationId=:destinationId;"
+        result = self.db.session.execute(sql, {"username":username,"destinationId":destinationId}).fetchall()
+        self.db.session.commit()
+        return len(result) != 0
 
 
     # DEFAULT DATA: 

@@ -29,6 +29,14 @@
       <p><b>Admin</b>: {%if admin %} kyllä {% else %} ei {% endif %}</p>
       <br>
       
+      <h4>Suosikkini</h4>
+      <ul>
+        {% for favourite in favourites %}
+          <li><a href="../destination?dest={{favourite[1]}}">{{ favourite[2] }}, {{ favourite[3] }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <br>
       <div>
         {% if admin %}
         <h4>Lisää uusi luontokohde</h4>

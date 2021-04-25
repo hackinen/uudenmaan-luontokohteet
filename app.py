@@ -104,13 +104,19 @@ def newuser():
 def newreview():
     try:
         isLoggedIn()
+        admin = db.isAdmin(session["username"])
+        destination = db.getDestinationById(session["destinationId"])
+        reviews = db.getReviewsByDestination(session["destinationId"])
+        attractions = db.getAttractionsByDestination(session["destinationId"])
+
         comment = request.form["comment"]
         userId = db.getUserId(session["username"])
-        ranking = request.form["stars"]
-
-        if ranking == None:
+        
+        try:
+            ranking = request.form["stars"]
+        except:
             error = "Anna arvio 1-5"
-            return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions, error=error)
+            return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions, admin=admin, isFavourite = db.isFavourite(session["username"],session["destinationId"]), error=error)
 
         db.createReview(session["destinationId"],userId, ranking, comment)
         return redirect("/destination")
@@ -144,11 +150,11 @@ def newdestination():
 
             if name == None or name == "":
                 error = "Anna luontokohteen nimi"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), error=error)
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), favourites = db.getFavouritesByUser(session["username"]), error=error)
 
             if town == None or town == "":
                 error = "Anna luontokohteen sijaintikunta"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), error=error)
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), favourites = db.getFavouritesByUser(session["username"]), error=error)
 
             db.createDestination(name,town)
             return redirect("/profile")
@@ -184,7 +190,7 @@ def newattraction():
 
             if attraction == None or attraction == "":
                 error2 = "Anna lisättävän polun/nähtävyyden nimi"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), error2=error2)
+                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), favourites = db.getFavouritesByUser(session["username"]), error2=error2)
 
             if info == None or info == "":
                 db.createAttractionWithNoInfo(destinationId,attraction)
@@ -210,6 +216,27 @@ def deleteattraction():
         print(e)
         return redirect("/")
 
+
+@app.route("/makefavourite")
+def makefavourite():
+    try:
+        isLoggedIn()
+        db.createFavourite(session["username"],session["destinationId"])
+        return redirect("/destination")
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
+
+@app.route("/removefavourite")
+def removefavourite():
+    try:
+        isLoggedIn()
+        db.deleteFavourite(session["username"],session["destinationId"])
+        return redirect("/destination")
+    except Exception as e:
+        print(e)
+        return redirect("/")
 
 @app.route("/mainpage")
 def mainpage():
@@ -238,7 +265,9 @@ def destination():
         destination = db.getDestinationById(session["destinationId"])
         reviews = db.getReviewsByDestination(session["destinationId"])
         attractions = db.getAttractionsByDestination(session["destinationId"])
-        return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions, admin=admin)
+        isFavourite = db.isFavourite(session["username"],session["destinationId"])
+
+        return render_template("destination.html", destination=destination, reviews=reviews, attractions=attractions, admin=admin, isFavourite=isFavourite)
     except Exception as e:
         print(e)
         return redirect("/")
@@ -255,7 +284,8 @@ def profile():
         name = db.getName(session["username"])
         destinations = db.getDestinations()
         reviews = db.getReviewsByUser(session["username"])
-        return render_template("profile.html",name=name,username=session["username"],admin=admin,destinations=destinations,reviews=reviews)
+        favourites = db.getFavouritesByUser(session["username"])
+        return render_template("profile.html",name=name,username=session["username"],admin=admin,destinations=destinations,reviews=reviews,favourites=favourites)
     except Exception as e:
         print(e)
         return redirect("/")
