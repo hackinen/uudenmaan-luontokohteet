@@ -12,18 +12,18 @@ Helsingin Yliopiston tietokantasovelluskurssilla toteutettava sovellus, jonka ta
 
 ## Sovelluksen eteneminen
 
-Sovellukseen on toteutettu kirjatumis- ja rekisteröintitoiminnot kokonaisuudessaan sekä käyttöliittymää on aloitettu. Etusivulta löytyy listaus suosituimmista luontokohteista ja joita painamalla pääsee kyseisen luontokohteen omalle sivulle. Vastaavasti kaikki tällä hetkellä tietokannassa olevat kohteet löytyvät välilehdeltä "Kaikki kohteet". Lisäksi on luotu sivu "Oma profiili", josta voi tarkastella oman profiilinsa tietoja. Tänne on tarkoitus tulla kaikki admintoiminnot sekä kaikille käyttäjille ainakin lista omista suosikkikohteista (ja ehkä omista annetuista arvioista).
+Sovellukseen on toteutettu suunnitellut toiminnot karttaa, hakemista ja suosikiksi lisäämistä lukuunottamatta. Etusivulta löytyy listaus suosituimmista luontokohteista ja joita painamalla pääsee kyseisen luontokohteen omalle sivulle. Vastaavasti kaikki tällä hetkellä tietokannassa olevat kohteet löytyvät välilehdeltä "Kaikki kohteet". Lisäksi on olemassa sivu "Oma profiili", josta voi tarkastella oman profiilinsa tietoja. Tällä sivulla on adminin lisäystoiminnot sekä kaikille käyttäjille näkyvä lista omista arvioistaan. Admin voi myös poistaa kohteisiin liittyviä tietoja sekä kokonaisia kohteita (nämä toiminnot löytyvät jokaisen kohteen omalta sivulta).
 
-Tietokannassa on tällä hetkellä kolme taulua: users, reviews ja destinations. Näistä reviews on vielä vaiheessa, eikä sitä vielä käytetä. Seuraavana tauluna on tarkoitus toteuttaa yksitäisiä luontopolkuja/nähtävyyksiä kuvaava taulu, jossa aina jokainen polku/nähtävyys linkittyy johonkin kohteseen. Taulun avulla voidaan jokaisen kohteen alle listata sen polut ja nähtävyydet. 
+Tietokannassa on tällä hetkellä neljä taulua: users, reviews, destinations ja attractions. Vielä olisi tarkoitus toteuttaa käyttäjien suosikkeja listaava taulu.
 
 Tarkempi kuvaus sovelluksen suunnitelmasta löytyy [määrittelydokumentista](https://github.com/hackinen/uudenmaan-luontokohteet/blob/main/dokumentaatio/maarittelydokumentti.md).
 
 
 ### Testikäyttäjä
 
-Sovelluksessa on valmiina adminin oikeuksilla varustettu testikäyttäjä (vielä mitään admin-toimintoja ei ole toteutettu):
+Sovelluksessa on valmiina adminin oikeuksilla varustettu testikäyttäjä:
 
 - nimimerkki: admin
 - salasana: admininsalasanajeejee
 
-Tavallista käyttäjää voi testata luomalla oman uuden käyttäjän, tosin tssä vaiheessa eroa adminin ja tavallisen käyttäjän välillä ei ole.
+Tavallista käyttäjää voi testata luomalla oman uuden käyttäjän.
