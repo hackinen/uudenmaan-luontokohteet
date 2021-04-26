@@ -147,16 +147,28 @@ def newdestination():
         if admin:
             name = request.form["name"]
             town = request.form["town"]
+            latitude = request.form["latitude"]
+            longitude = request.form["longitude"]
 
             if name == None or name == "":
-                error = "Anna luontokohteen nimi"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), favourites = db.getFavouritesByUser(session["username"]), error=error)
+                return renderProfileWithError("Anna luontokohteen nimi")
 
             if town == None or town == "":
-                error = "Anna luontokohteen sijaintikunta"
-                return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=admin, destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), favourites = db.getFavouritesByUser(session["username"]), error=error)
+                return renderProfileWithError("Anna luontokohteen sijaintikunta")
 
-            db.createDestination(name,town)
+            if latitude == None or latitude == "" or longitude == None or latitude == "":
+                return renderProfileWithError("Anna kohteen koordinaatit")
+
+            try:
+                lat = float(latitude)
+                lon = float(longitude)
+            except:
+                return renderProfileWithError("Koordinaatit tulee antaa liukulukumuodossa, esim. 60.3851798")
+
+            if lat < 59 or lat > 61 or lon < 22 or lon > 27:
+                return renderProfileWithError("Kohteen tulee sijaita Uudellamaalla")
+
+            db.createDestination(name,town,lat,lon)
             return redirect("/profile")
 
     except Exception as e:
@@ -241,9 +253,11 @@ def removefavourite():
 @app.route("/mainpage")
 def mainpage():
     try:
+        destinations = db.getDestinationsForMap()
         bestRanked = db.getBestRankedDestinations()
-        return render_template("mainpage.html",bestRanked=bestRanked)
-    except:
+        return render_template("mainpage.html",destinations=destinations, bestRanked=bestRanked)
+    except Exception as e:
+        print(e)
         return redirect("/")
 
 
@@ -298,3 +312,6 @@ def isNotValid(input):
     if len(input) < 2:
         return True
     return False
+
+def renderProfileWithError(error):
+    return render_template("profile.html",name=db.getName(session["username"]),username=session["username"],admin=db.isAdmin(session["username"]), destinations=db.getDestinations(), reviews = db.getReviewsByUser(session["username"]), favourites = db.getFavouritesByUser(session["username"]), error=error)

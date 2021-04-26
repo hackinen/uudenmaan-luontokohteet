@@ -1,6 +1,8 @@
 <!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 
 <title>Uudenmaan luontokohteet</title>
 <div class="container">
@@ -22,8 +24,32 @@
     <div class="col-8">
       <h1>Uudenmaan luontokohteet</h1>
       <p>Tervetuloa, {{ session.username }}!</p>
-      <p>Tähän kartta<p>
+      
+      <div id="map" style="height: 500px;"></div>
+      <script type="text/javascript">
+        // The first parameter are the coordinates of the center of the map
+        // The second parameter is the zoom level
+        var map = L.map('map').setView([60.415729,24.7201481], 8);
         
+        // {s}, {z}, {x} and {y} are placeholders for map tiles
+        // {x} and {y} are the x/y of where you are on the map
+        // {z} is the zoom level
+        // {s} is the subdomain of cartodb
+        // lol
+          var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>' 
+        });
+        
+        {% for destination in destinations %}
+          L.marker([{{ destination[3] }},{{ destination[4] }}]).addTo(map)
+          .bindPopup("<strong><a href='../destination?dest={{destination[0]}}'>{{destination[1]}}</a></strong>");
+        {% endfor %}
+        
+
+        // Now add the layer onto the map
+        map.addLayer(layer);
+      </script>
+
     </div>
     <div class="col-4">
       <h2>Suosituimpia kohteita</h2>

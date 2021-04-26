@@ -125,17 +125,22 @@ class Database:
     # DESTINATIONS:
 
     def createTableDestinations(self):
-        sql = "CREATE TABLE IF NOT EXISTS destinations (id SERIAL PRIMARY KEY, name TEXT, town TEXT);"
+        sql = "CREATE TABLE IF NOT EXISTS destinations (id SERIAL PRIMARY KEY, name TEXT, town TEXT, latitude NUMERIC, longitude NUMERIC);"
         self.db.session.execute(sql)
         self.db.session.commit()
 
-    def createDestination(self, name, town):
-        sql = "INSERT INTO destinations (name,town) VALUES (:name,:town)"
-        self.db.session.execute(sql, {"name":name,"town":town})
+    def createDestination(self, name, town,latitude,longitude):
+        sql = "INSERT INTO destinations (name,town,latitude,longitude) VALUES (:name,:town,:latitude,:longitude)"
+        self.db.session.execute(sql, {"name":name,"town":town,"latitude":latitude,"longitude":longitude})
         self.db.session.commit()
 
     def getDestinations(self):
         sql = self.db.session.execute("SELECT d.id, d.name, d.town, COALESCE(ROUND(AVG(r.ranking),1),0), COUNT(r.ranking) FROM destinations d LEFT JOIN reviews r ON r.destinationId=d.id GROUP BY d.id ORDER BY d.name;").fetchall()
+        self.db.session.commit()
+        return sql
+
+    def getDestinationsForMap(self):
+        sql = self.db.session.execute("SELECT * FROM destinations")
         self.db.session.commit()
         return sql
 
@@ -233,26 +238,27 @@ class Database:
     def addDefaultDestinations(self):
         dest = self.getDestination("Palakoski")
         if dest == None:
-            self.createDestination("Palakoski","Vihti")
-            self.createDestination("Pääkslahden luontopolku","Vihti")
-            self.createDestination("Liessaaren luontopolku","Lohja")
-            self.createDestination("Nuuksion kansallispuisto","Espoo")
-            self.createDestination("Sipooonkorven kansallispuisto","Sipoo")
-            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi")
-            self.createDestination("Meikon ulkoilualue","Kirkkonummi")
-            self.createDestination("Linlo","Kirkkonummi")
-            self.createDestination("Hanikan luontopolku","Espoo")
-            self.createDestination("Tremanskärrin luontopolku","Espoo")
-            self.createDestination("Sarvikallion luontopolku","Tuusula")
-            self.createDestination("Kukuljärven vaellusreitti","Loviisa")
-            self.createDestination("Luukki","Espoo")
-            self.createDestination("Högholmenin luontopolku","Hanko")
-            self.createDestination("Kopparnäsin virkistysalue","Inkoo")
-            self.createDestination("Karnaistenkorpi","Lohja")
-            self.createDestination("Korkbergetin luonnonsuojelualue","Kirkkonummi")
-            self.createDestination("Kytäjä-Usmin ulkoilualue","Hyvinkää")
-            self.createDestination("Karkalin luonnonpuisto","Lohja")
-            self.createDestination("Paavolan luontopolku","Lohja")
+            self.createDestination("Palakoski","Vihti",60.2662381,24.3425159)
+            self.createDestination("Pääkslahden luontopolku","Vihti",60.3750584,24.2634733)
+            self.createDestination("Liessaaren luontopolku","Lohja",60.2463721,24.0164076)
+            self.createDestination("Nuuksion kansallispuisto","Espoo",60.3127551,24.4787129)
+            self.createDestination("Sipooonkorven kansallispuisto","Sipoo",60.3125113,25.1602627)
+            self.createDestination("Porkkalanniemen virkistysalue","Kirkkonummi",59.9858272,24.4113026)
+            self.createDestination("Meikon ulkoilualue","Kirkkonummi",60.1489027,24.3716003)
+            self.createDestination("Linlo","Kirkkonummi",60.0230293,24.4112604)
+            self.createDestination("Hanikan luontopolku","Espoo",60.1309181,24.6847943)
+            self.createDestination("Tremanskärrin luontopolku","Espoo",60.3088278,24.7318286)
+            self.createDestination("Sarvikallion luontopolku","Tuusula",60.427581,25.0288785)
+            self.createDestination("Kukuljärven vaellusreitti","Loviisa",60.5197584,26.4617149)
+            self.createDestination("Luukki","Espoo",60.312874,24.6485655)
+            self.createDestination("Högholmenin luontopolku","Hanko",59.8336602,23.1373146)
+            self.createDestination("Kopparnäsin virkistysalue","Inkoo",60.0449117,24.2535573)
+            self.createDestination("Karnaistenkorpi","Lohja",60.3123315,24.0253588)
+            self.createDestination("Korkbergetin luonnonsuojelualue","Kirkkonummi",60.1621853,24.4337673)
+            self.createDestination("Kytäjä-Usmin ulkoilualue","Hyvinkää",60.6370718,24.7315964)
+            self.createDestination("Karkalin luonnonpuisto","Lohja",60.2407467,23.7923438)
+            self.createDestination("Paavolan luontopolku","Lohja",60.2264651,23.8886613)
+            self.createDestination("Varlaxuddenin virkistysalue","Porvoo",60.2204794,25.6070544)
 
 
     def addDefaultAttractions(self):
@@ -307,3 +313,4 @@ class Database:
             self.createAttraction(19,"luontopolku","6,5 km")
             self.createAttraction(20,"Paavolan luontopolku","1 km")
             self.createAttractionWithNoInfo(20,"Paavolan tammi")
+            self.createAttractionWithNoInfo(21,"Fågelboet")
