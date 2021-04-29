@@ -23,7 +23,20 @@
 
       <h1>Kaikki kohteet</h1>
       <br>
+      
+      <form action="/searchdestinations" method="POST">
+        <div>
+          <input type="text" placeholder="Hae kohteista.." name="searchbox">
+          <button type="submit">Hae</button>
+        </div>
+      </form>
+      <br>
+
       <div>
+        {% if allDestinations|length == 0 %}
+          <p>Ei tuloksia annetulla hakusanalla</p>
+        {% endif %}
+
         {% for destination in allDestinations: %}
             <h4><a href="../destination?dest={{destination[0]}}">{{ destination[1] }}, {{ destination[2] }}</a></h4>
             <ul>

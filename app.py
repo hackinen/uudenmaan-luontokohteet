@@ -250,6 +250,24 @@ def removefavourite():
         print(e)
         return redirect("/")
 
+
+@app.route("/searchdestinations",methods=["POST"])
+def searchdestinations():
+    try:
+        isLoggedIn()
+        searchbox = request.form["searchbox"]
+
+        if searchbox == None or searchbox == "":
+            return redirect("/destinations")
+        
+        destinations = db.getDestinationsThatMatchSearch(searchbox)
+        return render_template("destinations.html", allDestinations=destinations)
+
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
+
 @app.route("/mainpage")
 def mainpage():
     try:
@@ -267,7 +285,8 @@ def destinations():
         isLoggedIn()
         allDestinations = db.getDestinations()
         return render_template("destinations.html", allDestinations=allDestinations)
-    except:
+    except Exception as e:
+        print(e)
         return redirect("/")
 
 

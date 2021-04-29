@@ -144,6 +144,13 @@ class Database:
         self.db.session.commit()
         return sql
 
+    def getDestinationsThatMatchSearch(self,searchword):
+        sql = "SELECT d.id, d.name, d.town, COALESCE(ROUND(AVG(r.ranking),1),0), COUNT(r.ranking) FROM destinations d LEFT JOIN reviews r ON r.destinationId=d.id WHERE lower(d.name) LIKE '%' || lower(:searchword) || '%' OR lower(d.town) LIKE '%' || lower(:searchword) || '%' GROUP BY d.id ORDER BY d.name;"
+        result = self.db.session.execute(sql, {"searchword":searchword}).fetchall()
+        self.db.session.commit()
+        return result
+
+
     def getDestination(self, name):
         sql = "SELECT * FROM destinations WHERE name=:name"
         result = self.db.session.execute(sql, {"name":name})
