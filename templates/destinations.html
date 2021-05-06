@@ -29,6 +29,9 @@
           <input type="text" placeholder="Hae kohteista.." name="searchbox">
           <button type="submit">Hae</button>
         </div>
+
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        
       </form>
       <br>
 

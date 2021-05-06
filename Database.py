@@ -98,7 +98,7 @@ class Database:
         self.db.session.commit()
 
     def getReviewsByDestination(self, destinationId):
-        result = self.db.session.execute("SELECT u.username, r.ranking, r.comment FROM reviews r, users u WHERE r.destinationId=:destinationId AND u.id=r.userId", {"destinationId":destinationId})
+        result = self.db.session.execute("SELECT r.id, u.username, r.ranking, r.comment FROM reviews r, users u WHERE r.destinationId=:destinationId AND u.id=r.userId", {"destinationId":destinationId})
         reviews = result.fetchall()
         self.db.session.commit()
         return reviews

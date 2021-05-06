@@ -35,6 +35,7 @@
               <div class="form-group col-6">
                 <button type="submit" class="btn btn-primary">Kirjaudu</button>
               </div>
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
             
             {% if error %}

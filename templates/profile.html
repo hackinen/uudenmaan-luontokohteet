@@ -65,6 +65,8 @@
             <button type="submit" class="btn btn-primary">Lisää</button>
           </div>
 
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+          
         </form>
         {% if error %}
           <p> {{ error }}</p>
@@ -97,6 +99,9 @@
           <div class="form-group col-6">
             <button type="submit" class="btn btn-primary">Lisää</button>
           </div>
+
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
         </form>
         {% if error2 %}
           <p> {{ error2 }}</p>

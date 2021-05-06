@@ -2,7 +2,7 @@ from flask import Flask
 from flask import redirect, render_template, request, session
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
-
+import secrets
 from Database import Database
 
 app = Flask(__name__)
@@ -27,6 +27,7 @@ def register():
     username = request.form["username"]
     password = request.form["password"]
     passwordConfirm = request.form["passwordConfirm"]
+    session["csrf_token"] = secrets.token_hex(16)
 
     if name == None or name == "":
         error = "Valitse jokin nimi"
@@ -72,7 +73,8 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
     user = db.getPassword(username)
-       
+    session["csrf_token"] = secrets.token_hex(16)
+
     if user == None:
         #invalid username
         error = "Väärä käyttäjätunnus"
@@ -125,7 +127,6 @@ def newreview():
         return redirect("/")
 
 
-
 @app.route("/deletereview")
 def deletereview():
     try:
@@ -133,6 +134,19 @@ def deletereview():
         review = request.args["review"]
         db.deleteReview(review)
         return redirect("/profile")
+
+    except Exception as e:
+        print(e)
+        return redirect("/")
+
+
+@app.route("/deletereviewasadmin")
+def deletereviewasadmin():
+    try:
+        isLoggedIn()
+        review = request.args["review"]
+        db.deleteReview(review)
+        return redirect("/destination")
 
     except Exception as e:
         print(e)

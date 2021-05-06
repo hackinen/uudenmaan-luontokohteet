@@ -59,10 +59,13 @@
           <div class="form-group col-6">
             <button type="submit" class="btn btn-primary">Poista</button>
           </div>
+
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
         </form>
 
         <br>
-        <a href="/deletedestination?deldest={{destination[0]}}">Poista tämä kohde</a>
+        <h5><a href="/deletedestination?deldest={{destination[0]}}">Poista tämä kohde</a></h5>
       {% endif %}
 
     </div>
@@ -99,6 +102,9 @@
             <div class="form-group col-12">
                 <button type="submit" class="btn btn-primary">Lisää arvostelu</button>
             </div>
+
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            
         </form>
 
         {% if error %}
@@ -109,11 +115,15 @@
             <br>
             {% for review in reviews: %}
                 <h5>
-                    @{{ review[0] }} - 
+                    @{{ review[1] }} - 
                     <img src="/static/star.png" alt="tähtiä:" style="width:25px;height:25px;">
-                    {{review[1]}}
+                    {{review[2]}}
                 </h5>
-                <p>{{ review[2] }}</p>
+                <p>{{ review[3] }}</p>
+                {% if admin %}
+                  <a href="/deletereviewasadmin?review={{review[0]}}">Poista</a>
+                  <br>
+                {% endif %}
                 <br>
             {% endfor %}
         </div>   
