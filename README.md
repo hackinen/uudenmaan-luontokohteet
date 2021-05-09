@@ -12,9 +12,9 @@ Helsingin Yliopiston tietokantasovelluskurssilla toteutettava sovellus, jonka ta
 
 [Tietokannan skeema](https://github.com/hackinen/uudenmaan-luontokohteet/blob/main/dokumentaatio/tietokantaskeema.md)
 
-## Sovelluksen toiminta
+## Sovelluksen käyttö
 
-Uudenmaan luontokohteet -sovelluksella käyttäjä voi tarkastella erilaisia luontokohteita uudenmaan alueella, antaa niille arvioita ja lisätä niitä omalle suosikkilistalleen.
+Uudenmaan luontokohteet -sovelluksella käyttäjä voi tarkastella erilaisia luontokohteita uudenmaan alueella, antaa niille arvioita ja lisätä niitä omalle suosikkilistalleen. Lisäksi sovelluksessa on useita admin-toimintoja.
 
 Kirjautumisen tai uuden käyttäjätunnuksen luomisen jälkeen sovellus avautuu etusivulleen, jossa näkyy kaikki luontokohteet kartalla sekä listaus tällä hetkellä suosituimmista luontokohteista. Luontokohteen suosio perustuu keskiarvoon käyttäjien antamista arvioista (1-5 tähteä). Sovelluksen yläreunasta löytyy valikko, jossa etusivun lisäksi on sivut "Kaikki kohteet", "Oma profiili" sekä "Kirjaudu ulos".
 
